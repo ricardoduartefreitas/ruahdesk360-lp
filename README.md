@@ -16,4 +16,9 @@ assets/telas/       telas reais do produto (webp)
 sketches/           o estudo que originou a página
 404.html CNAME robots.txt sitemap.xml favicon.svg
 ```
-Publicação: branch `main` (GitHub Pages serve a raiz).
+Publicação: o GitHub Pages serve do branch **`gh-pages`** (foi o push nesse branch que ligou o Pages, sem precisar da permissão `pages: write`).
+O branch `main` guarda o mesmo conteudo para historico — **ao publicar, envie para os dois**:
+
+```
+git push origin main && git push origin main:gh-pages
+```
