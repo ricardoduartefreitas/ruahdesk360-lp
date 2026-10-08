@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://ruahdesk360.com.br/sitemap.xml
