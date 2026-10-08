@@ -350,6 +350,7 @@ function tema(t){
   function escolher(v){
     try{localStorage.setItem(CHAVE,v)}catch(e){}
     var b=document.getElementById('lgpd'); if(b) b.classList.remove('mostrar');
+    escolhaAtual();
     if(v==='aceito') medir();
   }
   document.getElementById('lgpd-aceitar').addEventListener('click',function(){escolher('aceito')});
