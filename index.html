@@ -16,6 +16,7 @@
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="apple-touch-icon" href="/favicon.svg">
 <meta name="robots" content="index,follow">
+<link rel="canonical" href="https://ruahdesk360.com.br/">
 <meta name="description" content="A IA atende e qualifica no WhatsApp, as conversas são distribuídas entre os atendentes e cada negociação fica registrada.">
 <style>
 /* ===== FONTE (variavel, servida daqui — nunca de CDN) ===== */
@@ -308,6 +309,7 @@ footer a{text-decoration:none;border-bottom:1px solid var(--border-strong)}
     <div style="display:flex;flex-direction:column;gap:6px">
       <a href="https://ruahtecnologia.com.br/privacidade.html">Política de privacidade</a>
       <a href="https://ruahtecnologia.com.br/termos.html">Termos de uso</a>
+      <button id="lgpd-abrir" type="button" style="background:none;border:0;padding:0;font:inherit;color:inherit;text-align:left;cursor:pointer;border-bottom:1px solid var(--border-strong)">Cookies e medição</button>
       <a href="https://ruahtecnologia.com.br/">ruahtecnologia.com.br</a>
     </div>
   </div>
@@ -326,6 +328,7 @@ function tema(t){
     <p><b>Cookies e medição.</b> Usamos cookie para medir o uso desta página e melhorar o atendimento.
       Nada é gravado antes de você escolher — e você pode mudar de ideia depois. Detalhes na
       <a href="https://ruahtecnologia.com.br/privacidade.html" target="_blank" rel="noopener">política de privacidade</a>.</p>
+    <p class="caption" id="lgpd-atual" style="flex:1 1 100%;margin-top:4px"></p>
     <div class="botoes">
       <button class="btn btn-secundario btn-sm" id="lgpd-recusar" type="button">Recusar</button>
       <button class="btn btn-primario btn-sm" id="lgpd-aceitar" type="button">Aceitar</button>
@@ -351,7 +354,18 @@ function tema(t){
   }
   document.getElementById('lgpd-aceitar').addEventListener('click',function(){escolher('aceito')});
   document.getElementById('lgpd-recusar').addEventListener('click',function(){escolher('recusado')});
-  var salvo=null; try{salvo=localStorage.getItem(CHAVE)}catch(e){}
+  function escolhaAtual(){
+    var s=null; try{s=localStorage.getItem(CHAVE)}catch(e){}
+    var el=document.getElementById('lgpd-atual');
+    if(el) el.textContent = s==='aceito' ? 'Sua escolha hoje: medição aceita.' :
+                             s==='recusado' ? 'Sua escolha hoje: medição recusada.' :
+                             'Você ainda não escolheu.';
+    return s;
+  }
+  document.getElementById('lgpd-abrir').addEventListener('click',function(){
+    escolhaAtual(); document.getElementById('lgpd').classList.add('mostrar');
+  });
+  var salvo=escolhaAtual();
   if(salvo==='aceito') medir();
   else if(salvo!=='recusado') document.getElementById('lgpd').classList.add('mostrar');
 })();
