@@ -10,17 +10,28 @@
 <meta property="og:title" content="Ruah Desk 360 — Atendimento comercial por WhatsApp com IA">
 <meta property="og:description" content="A IA atende e qualifica no WhatsApp, as conversas são distribuídas entre os atendentes e cada negociação fica registrada.">
 <meta property="og:url" content="https://ruahdesk360.com.br/">
-<meta property="og:image" content="https://ruahdesk360.com.br/assets/telas/dashboard.webp">
+<meta property="og:image" content="https://ruahdesk360.com.br/og.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Painel do Ruah Desk 360: atendimentos do dia, conversas e negociações em etapas">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://ruahdesk360.com.br/og.png">
 <meta name="theme-color" content="#157a3d">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="apple-touch-icon" href="/favicon.svg">
+<link rel="preload" href="/assets/fontes/pjs-var.woff2" as="font" type="font/woff2" crossorigin>
 <meta name="robots" content="index,follow">
 <link rel="canonical" href="https://ruahdesk360.com.br/">
 <meta name="description" content="A IA atende e qualifica no WhatsApp, as conversas são distribuídas entre os atendentes e cada negociação fica registrada.">
 <style>
 /* ===== FONTE (variavel, servida daqui — nunca de CDN) ===== */
 @font-face{font-family:'Plus Jakarta Sans';src:url('assets/fontes/pjs-var.woff2') format('woff2');font-weight:200 800;font-style:normal;font-display:swap}
+
+/* foco visivel de verdade: navegacao por teclado tem de ser usavel (o padrão da casa) */
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:4px}
+a:focus-visible,button:focus-visible,.seg button:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+@media (prefers-reduced-motion: reduce){*{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important}}
 
 /* ===== TOKENS DO DESIGN SYSTEM DO PRODUTO (tokens.json) ===== */
 :root{
@@ -305,10 +316,10 @@ footer a{text-decoration:none;border-bottom:1px solid var(--border-strong)}
   <div class="rodape">
     <div><strong style="color:var(--ink)">Ruah Desk 360</strong> é um sistema da<br>
       Ruah Tecnologia e Ecossistema Logístico Ltda · CNPJ 65.383.875/0001-65<br>
-      Goiânia, GO · Atendimento em todo o Brasil · revisado em 07/10/2026</div>
+      Goiânia, GO · Atendimento em todo o Brasil · revisado em 13/10/2026</div>
     <div style="display:flex;flex-direction:column;gap:6px">
-      <a href="https://ruahtecnologia.com.br/privacidade.html">Política de privacidade</a>
-      <a href="https://ruahtecnologia.com.br/termos.html">Termos de uso</a>
+      <a href="https://ruahtecnologia.com.br/privacidade">Política de privacidade</a>
+      <a href="https://ruahtecnologia.com.br/termos">Termos de uso</a>
       <button id="lgpd-abrir" type="button" style="background:none;border:0;padding:0;font:inherit;color:inherit;text-align:left;cursor:pointer;border-bottom:1px solid var(--border-strong)">Ajustar cookies</button>
       <a href="https://ruahtecnologia.com.br/">ruahtecnologia.com.br</a>
     </div>
@@ -327,7 +338,7 @@ function tema(t){
   <div class="caixa">
     <p><b>Cookies e medição.</b> Usamos cookie para medir o uso desta página e melhorar o atendimento.
       Nada é gravado antes de você escolher — e você pode mudar de ideia depois. Detalhes na
-      <a href="https://ruahtecnologia.com.br/privacidade.html" target="_blank" rel="noopener">política de privacidade</a>.</p>
+      <a href="https://ruahtecnologia.com.br/privacidade" target="_blank" rel="noopener">política de privacidade</a>.</p>
     <p class="caption" id="lgpd-atual" style="flex:1 1 100%;margin-top:4px"></p>
     <div class="botoes">
       <button class="btn btn-secundario btn-sm" id="lgpd-recusar" type="button">Recusar</button>
@@ -353,6 +364,16 @@ function tema(t){
     escolhaAtual();
     if(v==='aceito') medir();
   }
+  // A conversao de verdade desta pagina e o clique no CTA do WhatsApp.
+  // E um EVENTO (whatsapp_click), nunca uma conversao — e so existe depois do aceite,
+  // porque o gtag so e criado em medir(). Nada e enviado antes do consentimento.
+  document.addEventListener('click',function(ev){
+    var a=ev.target && ev.target.closest ? ev.target.closest('a[href*="wa.me/"]') : null;
+    if(!a || typeof window.gtag!=='function') return;
+    var sec=a.closest('section[id],header,footer');
+    window.gtag('event','whatsapp_click',{link_url:a.href,
+      local:(sec && (sec.id || sec.tagName.toLowerCase())) || 'topo'});
+  },true);
   document.getElementById('lgpd-aceitar').addEventListener('click',function(){escolher('aceito')});
   document.getElementById('lgpd-recusar').addEventListener('click',function(){escolher('recusado')});
   function escolhaAtual(){
